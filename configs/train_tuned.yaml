@@ -1,0 +1,36 @@
+# Improved configuration (proposal §4.1): longer schedule, cosine LR and augmentation aimed at
+# fridge photos (dim or uneven light, partial occlusion, cluttered shelves).
+# Change one group at a time against the baseline so each gain can be attributed.
+model: yolo11s.pt
+data: data/meallens/data.yaml
+epochs: 120
+imgsz: 640
+batch: 16
+patience: 30
+seed: 0
+deterministic: true
+project: runs
+name: tuned-yolo11s
+exist_ok: false
+plots: true
+
+# Schedule
+cos_lr: true
+lr0: 0.01
+lrf: 0.01
+warmup_epochs: 3
+close_mosaic: 15
+
+# Augmentation (training split only; Ultralytics never augments val/test)
+hsv_h: 0.015
+hsv_s: 0.6
+hsv_v: 0.5        # stronger brightness change: fridge lighting varies a lot
+degrees: 5.0      # small rotations, phones are rarely held perfectly level
+translate: 0.1
+scale: 0.5
+fliplr: 0.5       # food is left-right symmetric; no vertical flips (milk cartons have an up)
+flipud: 0.0
+mosaic: 1.0       # cluttered multi-object scenes
+mixup: 0.1
+copy_paste: 0.0   # needs segmentation masks
+erasing: 0.0      # classification-only setting in Ultralytics

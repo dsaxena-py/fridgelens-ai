@@ -1,0 +1,33 @@
+# The 25 MealLens detector classes. This file is the contract with the backend:
+# `index` is the YOLO class id, and `slug` must equal ingredients.slug in the database
+# (fridgelens-backend/seed_data/ingredients.yaml, field `class`). Never reorder; only append.
+#
+# aliases: names other datasets use for the class (case-insensitive; "_" and "-" read as spaces).
+# openimages: matching Open Images V7 boxable class names, if any.
+
+- {index: 0, slug: apple, name: Apple, openimages: [Apple], aliases: [apples, red apple, green apple]}
+- {index: 1, slug: banana, name: Banana, openimages: [Banana], aliases: [bananas]}
+- {index: 2, slug: orange, name: Orange, openimages: [Orange], aliases: [oranges, mandarin, navel orange]}
+- {index: 3, slug: lemon, name: Lemon or lime, openimages: [Lemon], aliases: [lemons, lime, limes]}
+- {index: 4, slug: strawberry, name: Strawberries, openimages: [Strawberry], aliases: [strawberries]}
+- {index: 5, slug: tomato, name: Tomato, openimages: [Tomato], aliases: [tomatoes, cherry tomato, roma tomato]}
+- {index: 6, slug: potato, name: Potato, openimages: [Potato], aliases: [potatoes]}
+- {index: 7, slug: onion, name: Onion, openimages: [], aliases: [onions, red onion, yellow onion, white onion]}
+- {index: 8, slug: garlic, name: Garlic, openimages: [], aliases: [garlic bulb, garlic clove]}
+- {index: 9, slug: carrot, name: Carrot, openimages: [Carrot], aliases: [carrots, baby carrot]}
+- {index: 10, slug: cucumber, name: Cucumber, openimages: [Cucumber], aliases: [cucumbers]}
+- {index: 11, slug: bell_pepper, name: Bell pepper, openimages: [Bell pepper],
+   aliases: [bell peppers, capsicum, red pepper, green pepper, yellow pepper, pepper]}
+- {index: 12, slug: broccoli, name: Broccoli, openimages: [Broccoli], aliases: []}
+- {index: 13, slug: cauliflower, name: Cauliflower, openimages: [], aliases: []}
+- {index: 14, slug: cabbage, name: Cabbage, openimages: [Cabbage], aliases: [red cabbage, green cabbage]}
+- {index: 15, slug: leafy_greens, name: Leafy greens, openimages: [], aliases: [lettuce, spinach, kale, salad greens, romaine]}
+- {index: 16, slug: mushroom, name: Mushrooms, openimages: [Mushroom], aliases: [mushrooms]}
+- {index: 17, slug: eggplant, name: Eggplant, openimages: [], aliases: [eggplants, aubergine, brinjal]}
+- {index: 18, slug: egg, name: Egg, openimages: [Egg (Food)], aliases: [eggs, egg carton]}
+- {index: 19, slug: milk, name: Milk, openimages: [Milk], aliases: [milk carton, milk bottle]}
+- {index: 20, slug: cheese, name: Cheese, openimages: [Cheese], aliases: [cheddar, mozzarella]}
+- {index: 21, slug: yogurt, name: Yogurt, openimages: [], aliases: [yoghurt, greek yogurt]}
+- {index: 22, slug: butter, name: Butter, openimages: [], aliases: []}
+- {index: 23, slug: chicken, name: Chicken, openimages: [], aliases: [raw chicken, chicken breast, chicken thigh, chicken meat]}
+- {index: 24, slug: bread, name: Bread, openimages: [Bread], aliases: [loaf, bread loaf, sliced bread, toast]}
