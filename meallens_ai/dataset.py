@@ -5,6 +5,8 @@ Split rules (proposal §4):
   land in both train and test. The scene is read from the file name (see SCENE_PATTERN).
 * Public images go 90/10 to train/val and never to test: the test set measures the real domain.
 * A scene's split is a hash of its id, so adding new photos later never moves existing ones.
+  Small datasets are the exception: if val or test would be empty, the train scene closest to
+  that split's hash range is moved into it, so training always has a validation set.
 """
 
 from __future__ import annotations
@@ -81,11 +83,27 @@ def collect(sources: list[Path], seed: int) -> tuple[list[Item], list[str]]:
             item = Item(image=image, source=name, kind=kind, group=f"{name}/{group}")
             item.split = assign_split(kind, item.group, seed)
             items.append(item)
+        fill_empty_splits([it for it in items if it.source == name], kind, seed)
         if no_scene:
             warnings.append(f"{name}: {no_scene} custom images do not follow the '<initials>-<scene>-<shot>' "
                             "name pattern; each is treated as its own scene, so near-duplicates may leak "
                             "between splits")
     return items, warnings
+
+
+def fill_empty_splits(items: list[Item], kind: str, seed: int) -> None:
+    """Move whole train groups into val (and, for custom data, test) when those would be empty."""
+    wanted = ["val"] if kind == "public" else ["val", "test"]
+    for split in wanted:
+        if any(it.split == split for it in items):
+            continue
+        train_groups = sorted({it.group for it in items if it.split == "train"}, key=lambda g: -unit_hash(g, seed))
+        if len(train_groups) < 2:
+            continue  # keep at least one group for training
+        moved = train_groups[0]
+        for it in items:
+            if it.group == moved:
+                it.split = split
 
 
 def _place(src: Path, dst: Path, mode: str) -> None:
@@ -110,6 +128,8 @@ def build(sources: list[Path], out: Path, seed: int = 0, link: str = "hardlink")
     items, warnings = collect([Path(s) for s in sources], seed)
     if not items:
         raise ValueError("no images found in the sources")
+    if not any(it.split == "val" for it in items):
+        raise ValueError("not enough images for a validation split; add more scenes or a public source")
     for split in SPLITS:
         for sub in ("images", "labels"):
             shutil.rmtree(out / sub / split, ignore_errors=True)

@@ -140,6 +140,17 @@ def test_build_keeps_scenes_together(tmp_path):
     assert sum(v["images"] for v in stats["splits"].values()) == 110
 
 
+def test_small_custom_set_still_gets_val_and_test(tmp_path):
+    custom = tmp_path / "custom"
+    for scene in range(4):
+        make_image(custom / "images" / f"ab-{scene:03d}-00.jpg")
+        write_labels(custom / "labels" / f"ab-{scene:03d}-00.txt", [Box(0, .5, .5, .3, .3)])
+    write_source_info(custom, name="fridge", kind="custom")
+    for seed in range(10):
+        splits = build([custom], tmp_path / f"ds{seed}", seed=seed, link="copy")["splits"]
+        assert {"train", "val", "test"} <= set(splits)
+
+
 def test_check_reports_bad_boxes(tmp_path):
     make_image(tmp_path / "images" / "train" / "x.jpg")
     (tmp_path / "labels" / "train").mkdir(parents=True)
