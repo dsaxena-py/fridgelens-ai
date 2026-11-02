@@ -1,0 +1,14 @@
+# Training and evaluation (Kaggle / Colab: torch comes preinstalled with CUDA)
+ultralytics==8.4.170
+onnx==1.23.1
+onnxslim==0.1.97
+onnxruntime==1.30.0
+pyyaml>=6.0
+pillow>=10.0
+numpy>=1.26
+
+# Open Images download (only needed for `download-openimages`)
+fiftyone==1.22.1
+
+# Tests
+pytest>=8.0

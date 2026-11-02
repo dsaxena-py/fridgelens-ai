@@ -1,0 +1,14 @@
+# Baseline (proposal §4.1): pretrained YOLO11s, default augmentation, no tuning.
+# Any key here is passed straight to ultralytics YOLO.train().
+model: yolo11s.pt
+data: data/meallens/data.yaml
+epochs: 50
+imgsz: 640
+batch: 16
+patience: 20
+seed: 0
+deterministic: true
+project: runs
+name: baseline-yolo11s
+exist_ok: false
+plots: true

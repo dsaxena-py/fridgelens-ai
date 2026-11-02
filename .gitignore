@@ -1,0 +1,10 @@
+data/
+runs/
+exports/
+reports/
+prelabelled/
+*.pt
+*.onnx
+__pycache__/
+.pytest_cache/
+.venv/
