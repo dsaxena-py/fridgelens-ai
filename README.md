@@ -29,10 +29,15 @@ the YOLO class id, and the slug equals `ingredients.slug` in the database. Never
 | Source | Classes |
 | --- | --- |
 | Open Images V7 + our photos | apple, banana, orange, lemon (incl. lime), strawberry, tomato, potato, carrot, cucumber, bell_pepper, broccoli, cabbage, mushroom, egg, milk, cheese, bread |
-| **Our photos + Roboflow Universe only** | onion, garlic, cauliflower, leafy_greens, eggplant, yogurt, butter, chicken |
+| **Our photos + Roboflow Universe subsets** | onion, eggplant (from `vegetables-2a164-phone`); yogurt, chicken (from `ingredients-bloos-phone`) |
+| **Our photos only** | garlic, cauliflower, leafy_greens, butter |
 
-The second row is why our own photos matter so much. See
-[`docs/data_collection.md`](docs/data_collection.md) for how to shoot, name and label them.
+The Universe subsets are phone photos of items on a table, picked from two larger sets; they
+also add boxes for some Open Images classes (egg, milk, orange, carrot, tomato, cabbage,
+bell_pepper). No Universe set we checked passes the table-scene rule for the last row (garlic has
+just 3 Universe boxes), which is why our own photos matter so much. See
+[`docs/data_collection.md`](docs/data_collection.md) for how to shoot, name and label them, and
+for the Universe subsets, the sets rejected and how to cite them.
 
 ## Commands
 
