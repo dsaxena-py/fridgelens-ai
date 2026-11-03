@@ -131,7 +131,7 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--out", required=True)
     s.add_argument("--name", required=True)
     s.add_argument("--kind", required=True, choices=["custom", "public"],
-                   help="custom = your own fridge photos (used for test); public = anything else")
+                   help="custom = your own photos (used for test); public = anything else")
     s.add_argument("--map", help="YAML of extra name mappings, e.g. {capsicum_red: bell_pepper, jar: null}")
     s.set_defaults(func=cmd_import_yolo)
 

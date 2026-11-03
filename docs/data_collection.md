@@ -1,6 +1,11 @@
-# Collecting and labelling the MealLens fridge dataset
+# Collecting and labelling the MealLens dataset
 
-The detector learns most of what it knows from public data, but it is **judged on our own fridge
+For now our photos show ingredients **laid out on a table** (dining table, desk or kitchen counter),
+not inside a fridge. Table scenes are easier to set up and light, and they are what the demo will
+scan. Fridge scenes can be added later with the same naming and labelling; the pipeline treats
+them as more custom scenes.
+
+The detector learns most of what it knows from public data, but it is **judged on our own
 photos** (the test split is made only of them). Eight classes have no Open Images data at all, so
 for those our photos are most of the training data too:
 
@@ -25,29 +30,38 @@ Name every photo `<initials>-<scene>-<shot>.jpg`, for example `ds-014-03.jpg` (D
 shot 3).
 
 The split is decided per scene, so all shots of one arrangement stay in the same split. If shots
-of the same shelf ended up in both train and test, the test score would be inflated. Photos that
+of the same table arrangement ended up in both train and test, the test score would be inflated. Photos that
 don't follow the pattern are treated as their own scene, and `build-dataset` warns about them.
 
-Keep a one-line log per scene (fridge, lighting, items) in a shared sheet. It helps the failure
+Keep a one-line log per scene (table and surface, lighting, items) in a shared sheet. It helps the failure
 analysis later.
 
 ## Shooting
 
-A **scene** is one arrangement of items on one shelf, drawer or counter. For each scene:
+A **scene** is one arrangement of items on one table. For each scene:
 
-1. Take **3 to 5 shots**: straight on, slightly from above, closer, further away, and one with
-   the fridge light only (no room light).
-2. Then **rearrange**: move items, swap some in or out, change the shelf. That is a new scene
+1. Take **3 to 5 shots**:
+   - **top-down** (phone held flat above the table), which is how most people will scan,
+   - **angled** (about 45 degrees, standing next to the table),
+   - **low** (near table height, items overlap more),
+   - one **closer** and one **further away** (whole table in frame).
+2. Then **rearrange**: move items, swap some in or out, or change the table. That is a new scene
    number.
 
 Across all scenes, aim for:
 
-- **Mixed counts**: some single-item shots, most with 4 to 10 items, some crowded shelves.
-- **Clutter**: jars, sauces, takeout boxes and drinks we don't detect. They teach the model what
-  is *not* an ingredient.
-- **Occlusion**: items half behind others, eggs partly hidden in the carton, greens in bags.
-- **Variety**: at least 3 different fridges (dorm, friends, family) and at least 2 phones. Brands
-  and packaging vary: different milk cartons, cheese packs, yogurt cups.
+- **Mixed counts**: some single-item shots, most with 4 to 10 items, some crowded tables.
+- **Surfaces**: at least 3 different surfaces (wood, white or plain, a patterned tablecloth or
+  placemat, a kitchen counter). A detector trained on one table learns the table.
+- **Lighting**: daylight from a window, overhead room light, a dim evening lamp, and some shots
+  with strong shadows. No flash.
+- **Clutter**: plates, mugs, cutlery, jars, sauces, phones and drinks we don't detect. They teach
+  the model what is *not* an ingredient.
+- **Occlusion**: items partly behind or on top of others, eggs in an open carton, greens in bags.
+- **Natural states**: items as they come out of the shopping bag or fridge: in packaging, loose,
+  in a bowl, lying down or standing.
+- **Variety**: at least 2 phones, and different brands and packaging (milk cartons and bottles,
+  cheese packs, yogurt cups).
 - **Hard pairs** side by side: tomato and apple, lemon and orange, onion and potato, garlic and
   onion, cabbage and lettuce.
 
@@ -61,7 +75,7 @@ Use the class slugs exactly as written (copy them from `python -m meallens_ai cl
 `apple banana orange lemon strawberry tomato potato onion garlic carrot cucumber bell_pepper broccoli
 cauliflower cabbage leafy_greens mushroom eggplant egg milk cheese yogurt butter chicken bread`
 
-**One box per thing a person would count when checking the fridge.** Box tightly around the
+**One box per thing a person would count when checking what they have.** Box tightly around the
 visible part.
 
 | Class | Box | Notes |

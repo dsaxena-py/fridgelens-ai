@@ -1,8 +1,9 @@
 """Merge source directories into one YOLO dataset with leak-free splits, and check it.
 
 Split rules (proposal §4):
-* Custom fridge photos are split 70/15/15 **by scene**, so near-identical shots of one shelf never
-  land in both train and test. The scene is read from the file name (see SCENE_PATTERN).
+* Custom photos (our own table scenes) are split 70/15/15 **by scene**, so near-identical shots
+  of one arrangement never land in both train and test. The scene is read from the file name
+  (see SCENE_PATTERN).
 * Public images go 90/10 to train/val and never to test: the test set measures the real domain.
 * A scene's split is a hash of its id, so adding new photos later never moves existing ones.
   Small datasets are the exception: if val or test would be empty, the train scene closest to
@@ -154,7 +155,7 @@ def build(sources: list[Path], out: Path, seed: int = 0, link: str = "hardlink")
     if any(it.split == "test" for it in items):
         data["test"] = "images/test"
     else:
-        warnings.append("no test split yet: it is made only of custom fridge photos")
+        warnings.append("no test split yet: it is made only of custom photos")
     (out / "data.yaml").write_text(yaml.safe_dump(data, sort_keys=False))
 
     stats = check(out)

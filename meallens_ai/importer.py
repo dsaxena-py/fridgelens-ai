@@ -72,7 +72,7 @@ def import_yolo(src: Path, out: Path, name: str, kind: str, extra_map: dict | No
                 boxes.append(Box(mapping[b.cls], b.cx, b.cy, b.w, b.h))
             else:
                 dropped_boxes += 1
-        # Custom fridge photos keep empty images: they are valid negatives. Public images without
+        # Custom photos keep empty images: they are valid negatives. Public images without
         # any of our classes are just noise.
         if not boxes and kind == "public":
             empty += 1

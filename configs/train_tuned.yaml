@@ -1,5 +1,6 @@
 # Improved configuration (proposal §4.1): longer schedule, cosine LR and augmentation aimed at
-# fridge photos (dim or uneven light, partial occlusion, cluttered shelves).
+# our photos of ingredients on a table (window, overhead and dim lamp light, shadows, top-down and
+# angled views, partial occlusion, cluttered tables).
 # Change one group at a time against the baseline so each gain can be attributed.
 model: yolo11s.pt
 data: data/meallens/data.yaml
@@ -24,11 +25,11 @@ close_mosaic: 15
 # Augmentation (training split only; Ultralytics never augments val/test)
 hsv_h: 0.015
 hsv_s: 0.6
-hsv_v: 0.5        # stronger brightness change: fridge lighting varies a lot
-degrees: 5.0      # small rotations, phones are rarely held perfectly level
+hsv_v: 0.5        # stronger brightness change: indoor lighting varies a lot
+degrees: 10.0     # top-down table shots have no fixed "up", so rotate more than for level shots
 translate: 0.1
 scale: 0.5
-fliplr: 0.5       # food is left-right symmetric; no vertical flips (milk cartons have an up)
+fliplr: 0.5       # food is left-right symmetric; no vertical flips (angled shots of cartons have an up)
 flipud: 0.0
 mosaic: 1.0       # cluttered multi-object scenes
 mixup: 0.1

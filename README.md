@@ -1,13 +1,13 @@
 # MealLens AI
 
 Training pipeline for the MealLens ingredient detector: a YOLO11 model fine-tuned to find 25 common
-fridge ingredients in one photo. It produces an ONNX model that the FastAPI backend
+kitchen ingredients in one photo (for now, ingredients laid out on a table). It produces an ONNX model that the FastAPI backend
 (`fridgelens-backend`) runs on CPU, plus the SQL that registers it in Supabase.
 
 ```
 Open Images (17 classes) ─┐
 Roboflow Universe sets  ──┼─> import ─> build-dataset ─> train ─> tune-threshold ─> evaluate ─> export
-Our fridge photos       ──┘             (scene split)    (YOLO11)     (val)           (test)      (ONNX + SQL)
+Our table photos       ──┘             (scene split)    (YOLO11)     (val)           (test)      (ONNX + SQL)
 ```
 
 ## Where to train: Kaggle
@@ -31,7 +31,7 @@ the YOLO class id, and the slug equals `ingredients.slug` in the database. Never
 | Open Images V7 + our photos | apple, banana, orange, lemon (incl. lime), strawberry, tomato, potato, carrot, cucumber, bell_pepper, broccoli, cabbage, mushroom, egg, milk, cheese, bread |
 | **Our photos + Roboflow Universe only** | onion, garlic, cauliflower, leafy_greens, eggplant, yogurt, butter, chicken |
 
-The second row is why the fridge photos matter so much. See
+The second row is why our own photos matter so much. See
 [`docs/data_collection.md`](docs/data_collection.md) for how to shoot, name and label them.
 
 ## Commands
@@ -71,7 +71,7 @@ python -m meallens_ai prelabel --weights runs/baseline-yolo11s/weights/best.pt -
 | Config | Purpose |
 | --- | --- |
 | `configs/train_baseline.yaml` | Pretrained YOLO11s, default settings, 50 epochs |
-| `configs/train_tuned.yaml` | Cosine LR, 120 epochs, augmentation for fridge lighting and clutter |
+| `configs/train_tuned.yaml` | Cosine LR, 120 epochs, augmentation for indoor lighting, viewpoint and clutter |
 
 To compare model sizes, copy a config and change `model:` to `yolo11n.pt` or `yolo11m.pt`. Change
 one thing at a time, so each gain can be attributed.
