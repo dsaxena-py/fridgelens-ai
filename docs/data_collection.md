@@ -188,3 +188,88 @@ file, using `null` to drop a class:
 Brinjal: eggplant
 Spring Onion: null   # green onion is not one of our classes
 ```
+
+### Sets in use
+
+Checked on 2026-11-03 against the rule above. Only these two subsets passed; each is a
+phone-photo subset of a larger set whose other photos fail the rule.
+
+| Source folder | Universe set | Our classes (images / boxes) | Other classes (boxes) |
+| --- | --- | --- | --- |
+| `vegetables-2a164-phone` (404 images) | [vegetables-19jw7/vegetables-2a164](https://universe.roboflow.com/vegetables-19jw7/vegetables-2a164), v1 | onion 174 / 230, eggplant 80 / 156, garlic 1 / 3 | egg 280, carrot 243, tomato 200, cabbage 170, bell_pepper 161, cucumber 14, potato 5 |
+| `ingredients-bloos-phone` (344 images) | [ingredients-bloos/ingredient-detection](https://universe.roboflow.com/ingredients-bloos/ingredient-detection) | yogurt 200 / 257, chicken 144 / 171 | egg 195, milk 143, orange 130 |
+
+How each subset was made:
+
+- **vegetables-2a164-phone**: from the v1 YOLOv8 export, only photos whose names start with
+  `IMG_`, `DSC` or `WhatsApp` (phone photos, mostly on tables and counters; the rest of the set is
+  about half studio shots, fridges and fields). One copy per photo: the export holds 3 blurred
+  copies, and since public images are split by file name, the copies would otherwise leak between
+  train and val. Images are 320×320, stretched by Roboflow's preprocessing. 3 polygon labels were
+  converted to boxes; beet and zucchini were dropped.
+- **ingredients-bloos-phone**: photos containing yoghurt or chicken whose names start with `IMG_`,
+  a `YYYYMMDD_HHMMSS` timestamp or `Ayam (n)`: yogurt cups next to eggs, oranges and milk cartons
+  on a plain table, and raw chicken on a white table or tray. The rest of the set is packshots and
+  fridges. Version 4, the only full export, lacks most of these photos, so they were downloaded as
+  originals with their annotations through the Roboflow API, EXIF orientation applied and the long
+  side resized to at most 1280 px. The set's `background` class was dropped. The yogurt photos
+  show only 2 or 3 brands, so they add little packaging variety.
+
+Each folder has an `ATTRIBUTION.txt`. Both are in the private Kaggle dataset `meallens-universe`
+(`meallens-universe.zip`), which `PUBLIC_EXPORTS` in `notebooks/kaggle_train.ipynb` uses by default.
+
+**Not covered by any Universe set we found: cauliflower, leafy_greens and butter.** Those come
+only from our photos.
+
+### Sets checked and rejected
+
+So nobody checks them twice. Searched with 25 queries for the 8 classes, then looked at a sample of
+photos from the 50 sets with the most boxes for them. Forks of the same set are listed once.
+
+| Why rejected | Sets |
+| --- | --- |
+| Fields, seedlings, potted plants | ea-ax7xu/cauliflower-z9l3o, rmuti-zygtb/weed-kale-lettuce(-crop), fyp-aquci/kale-phjnm, myats/kale-krxan, agroplants/kale-7mlca, chlorotechdatasets/leafy-vegetables-7kpre, senghoutdev/lettuce-v7, lokatanikelompokin/kale-bayam |
+| Store shelves, packshots | denemeler-t69i6/yogurtkarisik, denemeler-t69i6/yogurtlarhepsi, iscan-jfnrk/dairy-klnmt, new-dairy-zm9sr/dairy-5hatj, first-data/dairy-rt, test-r0wpz/grocery-flkid, new-bywkn/fridge-items-8ejsp, project-heb0i/grocery-store-detection |
+| Fridge interiors | fridge-0keux/fridge-0fckr, northumbria-university-newcastle/smart-refrigerator-zryjr, fridge-6oahv/fridge-vstlk, fridgeitems/object-fridge-items, vladimir-sosa-k8x1s/fridge-items-2aph9, ai-project-pji0a/ingredient-detection-5uzov, deluxeviper/fridge-ingredients |
+| White-background or stock close-ups | thanh-huy-phan/food-ingredient-recognition, resipee/fruit-vegetable-detection, test-6bonj/fruits-and-vegetables-ygvjd, foody-8k61y/ingredient-detection-0tusu, data-orccx/food-ingredients-ftnpv, nutrilens-qvsz6/food-ingredients-detection-nxe34, cxd/cabbage-cauliflower-broccoli, ll-hui4x/cauliflower-wcyxe, adeel-kasban/cauliflower-dwfkv, models-qvh5p/lettuce-hvx36, roushan/spinach-noy3z, cookbot/salad-dataset-rvvgh, yolo-training-uygwi/ingredients-p3tk0, nurs-workspace-vavv5/ingredient-v0h5a, halal-emjap/chicken-only, recipe-b66ss/ingredient-detection-merws |
+| Cooking video frames, cooked meals | my-workspace-idgwe/food-ingredients-eegp7 and -2alny, myworkspace-awwul/ingredient-detection-d6nwz |
+| Not our domain | darrens/chicken-zme6l and poultry-1/raw-r248j (live chickens), cubesonbelt/butter-cgl7l (factory CCTV), frezo-ejjte/butter-bot-rxbjp (one butter dish on a floor, robot video) |
+| Copy of a set in use | stuff-j25uf/ingredient-detection-fpoox (same photos as ingredients-bloos) |
+
+### Citing them
+
+Both sets are CC BY 4.0, which requires credit. The ingredients-bloos description also says
+"for research purpose only" and that its pictures come from several sources (fairprice.com.sg,
+Flickr, other Universe sets); MealLens is research use, but say so in the paper and do not ship
+these images in anything public. Roboflow's citation format:
+
+```bibtex
+@misc{vegetables-2a164_dataset,
+  title        = {Vegetables Dataset},
+  type         = {Open Source Dataset},
+  author       = {Vegetables},
+  howpublished = {\url{https://universe.roboflow.com/vegetables-19jw7/vegetables-2a164}},
+  url          = {https://universe.roboflow.com/vegetables-19jw7/vegetables-2a164},
+  journal      = {Roboflow Universe},
+  publisher    = {Roboflow},
+  year         = {2024},
+  month        = {jan},
+  note         = {visited on 2026-11-03},
+}
+
+@misc{ingredient-detection_dataset,
+  title        = {ingredient detection Dataset},
+  type         = {Open Source Dataset},
+  author       = {ingredients},
+  howpublished = {\url{https://universe.roboflow.com/ingredients-bloos/ingredient-detection}},
+  url          = {https://universe.roboflow.com/ingredients-bloos/ingredient-detection},
+  journal      = {Roboflow Universe},
+  publisher    = {Roboflow},
+  year         = {2023},
+  month        = {jul},
+  note         = {visited on 2026-11-03},
+}
+```
+
+In the paper, also state which subset was used (the phone photos described above) and that it
+was used for training and validation only, never for testing.
